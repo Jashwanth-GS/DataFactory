@@ -1,0 +1,9 @@
+{
+	"name": "freeDataFactorydg",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f140f25e-fffa-4331-b87a-b783342c68f5",
+		"tenantId": "c1299092-a7b7-4db3-9fc9-f1ebcffc7e94"
+	}
+}
