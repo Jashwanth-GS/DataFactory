@@ -1,0 +1,24 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy from s3 to blob storage",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:05:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"annotations": []
+	}
+}
