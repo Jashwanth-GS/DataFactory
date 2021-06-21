@@ -1,0 +1,18 @@
+{
+	"name": "SqlServer1",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=adf-server.database.windows.net;Initial Catalog=ADF_database;User ID=adfserver",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-password"
+			}
+		}
+	}
+}
