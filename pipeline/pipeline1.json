@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AmazonS3ReadSettings",
 							"recursive": true,
@@ -28,26 +28,28 @@
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
-							"type": "JsonReadSettings"
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "froms3",
+						"referenceName": "froms3bucket",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": {
+							"fileName": {
 								"value": "@variables('fileName')",
 								"type": "Expression"
 							}
@@ -56,7 +58,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "toBlob",
+						"referenceName": "toblobstorage",
 						"type": "DatasetReference",
 						"parameters": {
 							"fileName": {
@@ -68,8 +70,8 @@
 				]
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
 				"dependsOn": [
 					{
 						"activity": "Copy data s3 to blob",
@@ -78,16 +80,56 @@
 						]
 					}
 				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataset": {
+						"referenceName": "fromblob",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data blob to sql",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "0.00:05:00",
+								"timeout": "7.00:00:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
@@ -96,37 +138,36 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "JsonSource",
+									"type": "DelimitedTextSource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
-										"wildcardFolderPath": "weatherreport",
-										"wildcardFileName": "*.json",
+										"wildcardFolderPath": "employeesData",
+										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
-										"type": "JsonReadSettings"
+										"type": "DelimitedTextReadSettings"
 									}
 								},
 								"sink": {
-									"type": "SqlServerSink"
+									"type": "SqlServerSink",
+									"tableOption": "autoCreate"
 								},
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
-									"mapComplexValuesToString": false
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
 								}
 							},
 							"inputs": [
 								{
-									"referenceName": "toBlob",
-									"type": "DatasetReference",
-									"parameters": {
-										"fileName": {
-											"value": "@item()",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "fromblob",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -135,7 +176,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"tableName": {
-											"value": "@item()",
+											"value": "@item().Name",
 											"type": "Expression"
 										}
 									}
@@ -150,11 +191,11 @@
 			"fileName": {
 				"type": "String"
 			},
-			"folderName": {
-				"type": "String"
-			},
 			"tableName": {
 				"type": "Array"
+			},
+			"folderName": {
+				"type": "String"
 			}
 		},
 		"annotations": []
