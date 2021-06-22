@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "migration_pipeline",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data s3 to blob",
+				"name": "data from s3 to blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -13,7 +13,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "employeesbucket//"
+					},
+					{
+						"name": "Destination",
+						"value": "freecontainer//"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
@@ -70,18 +79,18 @@
 				]
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "Getting file names from blob",
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Copy data s3 to blob",
+						"activity": "data from s3 to blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
 				"policy": {
-					"timeout": "7.00:00:00",
+					"timeout": "0.00:05:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -106,11 +115,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEach file in blob",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1",
+						"activity": "Getting file names from blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -119,23 +128,32 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata1').output.childItems",
+						"value": "@activity('Getting file names from blob').output.childItems",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "data from blob to sql database",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "7.00:00:00",
+								"timeout": "0.00:05:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "freecontainer/employeesData/"
+								},
+								{
+									"name": "Destination",
+									"value": ".@{item().Name}"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
@@ -190,9 +208,6 @@
 		"variables": {
 			"fileName": {
 				"type": "String"
-			},
-			"tableName": {
-				"type": "Array"
 			},
 			"folderName": {
 				"type": "String"
