@@ -161,7 +161,10 @@
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
 										"wildcardFolderPath": "employeesData",
-										"wildcardFileName": "*",
+										"wildcardFileName": {
+											"value": "@item().Name",
+											"type": "Expression"
+										},
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -193,10 +196,7 @@
 									"referenceName": "SqlServerTable1",
 									"type": "DatasetReference",
 									"parameters": {
-										"tableName": {
-											"value": "@item().Name",
-											"type": "Expression"
-										}
+										"tableName": "employeesData"
 									}
 								}
 							]
