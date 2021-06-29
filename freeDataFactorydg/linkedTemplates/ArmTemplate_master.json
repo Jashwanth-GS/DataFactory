@@ -34,6 +34,18 @@
 			"type": "string",
 			"defaultValue": "freepool"
 		},
+		"AzureBatch2_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "freebatchaccount"
+		},
+		"AzureBatch2_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
+		},
+		"AzureBatch2_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "freepool"
+		},
 		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "storage-account-connection-string"
@@ -89,6 +101,15 @@
 					},
 					"AzureBatch1_properties_typeProperties_poolName": {
 						"value": "[parameters('AzureBatch1_properties_typeProperties_poolName')]"
+					},
+					"AzureBatch2_properties_typeProperties_accountName": {
+						"value": "[parameters('AzureBatch2_properties_typeProperties_accountName')]"
+					},
+					"AzureBatch2_properties_typeProperties_batchUri": {
+						"value": "[parameters('AzureBatch2_properties_typeProperties_batchUri')]"
+					},
+					"AzureBatch2_properties_typeProperties_poolName": {
+						"value": "[parameters('AzureBatch2_properties_typeProperties_poolName')]"
 					}
 				}
 			},

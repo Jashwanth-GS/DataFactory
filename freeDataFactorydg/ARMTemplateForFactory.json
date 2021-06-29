@@ -34,6 +34,18 @@
 			"type": "string",
 			"defaultValue": "freepool"
 		},
+		"AzureBatch2_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "freebatchaccount"
+		},
+		"AzureBatch2_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
+		},
+		"AzureBatch2_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "freepool"
+		},
 		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "storage-account-connection-string"
@@ -48,7 +60,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/ETL_pipeline')]",
+			"name": "[concat(parameters('factoryName'), '/ETL_job_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -58,7 +70,7 @@
 						"type": "Custom",
 						"dependsOn": [],
 						"policy": {
-							"timeout": "0.00:05:00",
+							"timeout": "7.00:00:00",
 							"retry": 0,
 							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
@@ -66,19 +78,14 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"command": "python -m extract.py",
-							"resourceLinkedService": {
-								"referenceName": "AzureBlobStorage1",
-								"type": "LinkedServiceReference"
-							},
-							"folderPath": "freecontainer/python_files",
+							"command": "python extract.py",
 							"referenceObjects": {
 								"linkedServices": [],
 								"datasets": []
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureBatch1",
+							"referenceName": "AzureBatch2",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -86,8 +93,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBatch1')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBatch2')]"
 			]
 		},
 		{
@@ -521,6 +527,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBatch2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"accountName": "[parameters('AzureBatch2_properties_typeProperties_accountName')]",
+					"accessKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "batchAccountKey"
+					},
+					"batchUri": "[parameters('AzureBatch2_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('AzureBatch2_properties_typeProperties_poolName')]",
+					"linkedServiceName": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -584,16 +620,8 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "ETL_pipeline",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -604,9 +632,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ETL_pipeline')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

@@ -27,6 +27,15 @@
 		"AzureBatch1_properties_typeProperties_poolName": {
 			"value": "freepool"
 		},
+		"AzureBatch2_properties_typeProperties_accountName": {
+			"value": "freebatchaccount"
+		},
+		"AzureBatch2_properties_typeProperties_batchUri": {
+			"value": "https://freebatchaccount.eastus.batch.azure.com"
+		},
+		"AzureBatch2_properties_typeProperties_poolName": {
+			"value": "freepool"
+		},
 		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
 			"value": "storage-account-connection-string"
 		},
