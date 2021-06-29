@@ -8,6 +8,9 @@
 		"SqlServer1_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorage2_connectionString": {
+			"value": ""
+		},
 		"AmazonS31_properties_typeProperties_accessKeyId": {
 			"value": {
 				"type": "AzureKeyVaultSecret",
@@ -41,6 +44,15 @@
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://myfreekeyvault.vault.azure.net/"
+		},
+		"AzureBatch3_properties_typeProperties_accountName": {
+			"value": "freebatchaccount"
+		},
+		"AzureBatch3_properties_typeProperties_batchUri": {
+			"value": "https://freebatchaccount.eastus.batch.azure.com"
+		},
+		"AzureBatch3_properties_typeProperties_poolName": {
+			"value": "new_pool_activity"
 		}
 	}
 }

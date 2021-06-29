@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
 		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
 		"AmazonS31_properties_typeProperties_accessKeyId": {
 			"type": "object",
 			"defaultValue": {
@@ -53,6 +57,18 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://myfreekeyvault.vault.azure.net/"
+		},
+		"AzureBatch3_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "freebatchaccount"
+		},
+		"AzureBatch3_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
+		},
+		"AzureBatch3_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "new_pool_activity"
 		}
 	},
 	"variables": {
@@ -78,14 +94,19 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"command": "python extract.py",
+							"command": "\"python extract.py\"",
+							"resourceLinkedService": {
+								"referenceName": "AzureBlobStorage1",
+								"type": "LinkedServiceReference"
+							},
+							"folderPath": "freecontainer/python_files",
 							"referenceObjects": {
 								"linkedServices": [],
 								"datasets": []
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureBatch2",
+							"referenceName": "AzureBatch3",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -93,7 +114,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBatch2')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBatch3')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
@@ -633,6 +655,49 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage2_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBatch3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"accountName": "[parameters('AzureBatch3_properties_typeProperties_accountName')]",
+					"accessKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "batchAccountKey"
+					},
+					"batchUri": "[parameters('AzureBatch3_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('AzureBatch3_properties_typeProperties_poolName')]",
+					"linkedServiceName": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault1')]"
+			]
 		}
 	]
 }
