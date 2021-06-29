@@ -1,0 +1,24 @@
+{
+	"name": "AzureBatch3",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBatch",
+		"typeProperties": {
+			"accountName": "freebatchaccount",
+			"accessKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "batchAccountKey"
+			},
+			"batchUri": "https://freebatchaccount.eastus.batch.azure.com",
+			"poolName": "new_pool_activity",
+			"linkedServiceName": {
+				"referenceName": "AzureBlobStorage1",
+				"type": "LinkedServiceReference"
+			}
+		}
+	}
+}
