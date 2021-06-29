@@ -15,14 +15,19 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"command": "python extract.py",
+					"command": "\"python extract.py\"",
+					"resourceLinkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					},
+					"folderPath": "freecontainer/python_files",
 					"referenceObjects": {
 						"linkedServices": [],
 						"datasets": []
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureBatch2",
+					"referenceName": "AzureBatch3",
 					"type": "LinkedServiceReference"
 				}
 			}
