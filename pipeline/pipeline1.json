@@ -1,9 +1,9 @@
 {
-	"name": "ETL_job_pipeline",
+	"name": "pipeline1",
 	"properties": {
 		"activities": [
 			{
-				"name": "extract",
+				"name": "Custom1",
 				"type": "Custom",
 				"dependsOn": [],
 				"policy": {
@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"command": "cmd \"python extract.py\"",
+					"command": "python extract.py",
 					"resourceLinkedService": {
 						"referenceName": "AzureBlobStorage1",
 						"type": "LinkedServiceReference"
