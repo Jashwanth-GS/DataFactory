@@ -5,10 +5,10 @@
 		"factoryName": {
 			"value": "freeDataFactorydg"
 		},
-		"SqlServer1_connectionString": {
+		"AzureBatch1_accessKey": {
 			"value": ""
 		},
-		"AzureBlobStorage2_connectionString": {
+		"SqlServer1_connectionString": {
 			"value": ""
 		},
 		"AmazonS31_properties_typeProperties_accessKeyId": {
@@ -22,37 +22,19 @@
 			}
 		},
 		"AzureBatch1_properties_typeProperties_accountName": {
-			"value": "freebatchaccount"
+			"value": "newaccount"
 		},
 		"AzureBatch1_properties_typeProperties_batchUri": {
-			"value": "https://freebatchaccount.eastus.batch.azure.com"
+			"value": "https://newaccount.eastus.batch.azure.com"
 		},
 		"AzureBatch1_properties_typeProperties_poolName": {
-			"value": "freepool"
-		},
-		"AzureBatch2_properties_typeProperties_accountName": {
-			"value": "freebatchaccount"
-		},
-		"AzureBatch2_properties_typeProperties_batchUri": {
-			"value": "https://freebatchaccount.eastus.batch.azure.com"
-		},
-		"AzureBatch2_properties_typeProperties_poolName": {
-			"value": "freepool"
+			"value": "new_pool"
 		},
 		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
 			"value": "storage-account-connection-string"
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://myfreekeyvault.vault.azure.net/"
-		},
-		"AzureBatch3_properties_typeProperties_accountName": {
-			"value": "freebatchaccount"
-		},
-		"AzureBatch3_properties_typeProperties_batchUri": {
-			"value": "https://freebatchaccount.eastus.batch.azure.com"
-		},
-		"AzureBatch3_properties_typeProperties_poolName": {
-			"value": "new_pool_activity"
 		},
 		"containerUri": {
 			"value": ""

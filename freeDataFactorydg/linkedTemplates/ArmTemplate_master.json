@@ -7,13 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "freeDataFactorydg"
 		},
+		"AzureBatch1_accessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessKey' of 'AzureBatch1'"
+		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
-		},
-		"AzureBlobStorage2_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
 		},
 		"AmazonS31_properties_typeProperties_accessKeyId": {
 			"type": "object",
@@ -28,27 +28,15 @@
 		},
 		"AzureBatch1_properties_typeProperties_accountName": {
 			"type": "string",
-			"defaultValue": "freebatchaccount"
+			"defaultValue": "newaccount"
 		},
 		"AzureBatch1_properties_typeProperties_batchUri": {
 			"type": "string",
-			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
+			"defaultValue": "https://newaccount.eastus.batch.azure.com"
 		},
 		"AzureBatch1_properties_typeProperties_poolName": {
 			"type": "string",
-			"defaultValue": "freepool"
-		},
-		"AzureBatch2_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "freebatchaccount"
-		},
-		"AzureBatch2_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
-		},
-		"AzureBatch2_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "freepool"
+			"defaultValue": "new_pool"
 		},
 		"AzureBlobStorage1_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -57,18 +45,6 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://myfreekeyvault.vault.azure.net/"
-		},
-		"AzureBatch3_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "freebatchaccount"
-		},
-		"AzureBatch3_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://freebatchaccount.eastus.batch.azure.com"
-		},
-		"AzureBatch3_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "new_pool_activity"
 		},
 		"containerUri": {
 			"type": "string",
@@ -97,11 +73,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBlobStorage2_connectionString": {
-						"value": "[parameters('AzureBlobStorage2_connectionString')]"
-					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
+					},
+					"AzureBatch1_accessKey": {
+						"value": "[parameters('AzureBatch1_accessKey')]"
 					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
@@ -120,24 +96,6 @@
 					},
 					"AzureBatch1_properties_typeProperties_poolName": {
 						"value": "[parameters('AzureBatch1_properties_typeProperties_poolName')]"
-					},
-					"AzureBatch2_properties_typeProperties_accountName": {
-						"value": "[parameters('AzureBatch2_properties_typeProperties_accountName')]"
-					},
-					"AzureBatch2_properties_typeProperties_batchUri": {
-						"value": "[parameters('AzureBatch2_properties_typeProperties_batchUri')]"
-					},
-					"AzureBatch2_properties_typeProperties_poolName": {
-						"value": "[parameters('AzureBatch2_properties_typeProperties_poolName')]"
-					},
-					"AzureBatch3_properties_typeProperties_accountName": {
-						"value": "[parameters('AzureBatch3_properties_typeProperties_accountName')]"
-					},
-					"AzureBatch3_properties_typeProperties_batchUri": {
-						"value": "[parameters('AzureBatch3_properties_typeProperties_batchUri')]"
-					},
-					"AzureBatch3_properties_typeProperties_poolName": {
-						"value": "[parameters('AzureBatch3_properties_typeProperties_poolName')]"
 					}
 				}
 			},
